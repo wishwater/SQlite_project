@@ -1,0 +1,15 @@
+.login_iron_image{
+  margin-top:5%;
+  width:50px;
+  height:100px;
+  animation-name: iron_moving;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes iron_moving{
+  0% {margin-left: 0;};
+  50% {margin-left: -25%;};
+  75% {margin-left: 25%;};
+  100% {margin-left: 0;};
+}

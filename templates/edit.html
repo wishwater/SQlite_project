@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<header>
+	<div class = "container-fluid">
+			<div class="row">
+				<div class="col-lg-4"><h1> New User Profile | Account</h1></div>
+				<div class="col-lg-3"><p>user account page</p></div>
+			</div>
+	</div>
+
+</header>
+<section>
+	<div class = "container-fluid">
+		  <div class="row">
+				<div class="col-lg-3 box imagebox">
+					<img src="../images/Marcus Doe.png" alt = "">
+					<h2>Marcus Doe</h2>
+					<p>Чувак , которому нужен фотограф.</p>
+					<button type="button" class="btn btn-info">Follow</button>
+					<button type="button" class="btn btn-danger">Message</button>
+						<ul class="imagenav">
+						  <li><a href="default.asp"><i class="fa fa-gear" style="font-size:36px;"></i>Home</a></li>
+						  <li><a href="news.asp"><i class="fa fa-info" style="font-size:36px"></i>News</a></li>
+						  <li><a href="contact.asp"><i class="fa fa-home" style="font-size:36px"></i>Contact</a></li>
+						  <li><a href="about.asp">About</a></li>
+						</ul>
+				</div>
+				<div class="col-lg-8 box">
+					<nav class="navbar navbar-default">
+					  <div class="container-fluid">
+					    <div class="navbar-header">
+					      <a class="navbar-brand" href="#">WebSiteName</a>
+					    </div>
+					    <ul class="nav navbar-nav">
+					      <li class="active"><a href="#">Home</a></li>
+					      <li><a href="#">Page 1</a></li>
+					      <li><a href="#">Page 2</a></li>
+					      <li><a href="#">Page 3</a></li>
+					    </ul>
+					  </div>
+					</nav>
+					<form action="/edit" method="POST">
+					    Last Name:<br>
+					  <input type="text" name="last_name" value="{{context.user.object.last_name}}" class="form-control">
+					    <br>
+					    First Name:<br>
+					  <input type="text" name="first_name" value="{{context.user.object.first_name}}" class="form-control">
+					    <br>
+					    Nickname:<br>
+					  <input type="text" name="nickname" value="{{context.user.object.nickname}}" class="form-control">
+					    <br>
+					  Email:<br>
+					  <input type="text" name="email" value="{{context.user.object.email}}" class="form-control">
+					  <br>
+					  Passw1:<br>
+					  <input type="text" name="passw1" value="{{context.user.object.password}}" class="form-control">
+					    <br>
+					  Passw2:<br>
+					  <input type="text" name="passw2" value="{{context.user.object.password}}" class="form-control">
+					  <br>
+						About:
+						<textarea class="form-control" rows="5" name="descr" value="{{context.user.object.descr}}"></textarea>
+					  <button type="submit" class="btn btn-info">Save Changes</button>
+						<button type="submit" class="btn">Cancel</button>
+					</form>
+				</div>
+			</div>
+	</div>
+</section>
+<footer></footer>
+
+<style>
+body{
+	padding:1%;
+	background-color: #9e9e9e17;
+}
+
+li a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.box{
+	background-color:#fff;
+	margin:2%;
+}
+
+.imagenav{
+	text-align:left;
+	list-style-type: none;
+	padding-top:25px;
+	text-decoration:none;
+	color:grey;
+	font-size:18px;
+}
+
+.imagenav a {
+	color:grey;
+}
+
+.imagenav a:hover{
+	color:grey;
+	background-color:black;
+	border-left:5px solid blue;
+	text-decoration:none;
+}
+
+img{
+	width:300px;
+	height:300px;
+}
+
+.imagebox{
+	text-align:center;
+}
+
+</style>
+
+</body>
+</html>

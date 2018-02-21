@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="../static/css/style_for_login.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3"></div>
+			<div class="col-lg-6 ">
+				<img src="../static/images/iron.png" alt="iron image" class="login_iron_image">
+			</div>
+			<div class="col-lg-3"></div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3"></div>
+			<div class="col-lg-4">
+				<form action="/login" method="POST">
+				  Email:<br>
+				  <input type="text" name="email" value=""  class="form-control">
+				  <br>
+				  Passw:<br>
+				  <input type="text" name="passw" value=""  class="form-control">
+				  <br><br>
+					<button type="submit" class="btn btn-danger" value="Login">Log In</button>
+				</form>
+				<form action = "/registration">
+					<button type="submit" id="cancel" href="/registration" class="btn btn-info">Registration</button>
+				</form>
+  		</div>
+			<div class="col-lg-3"></div>
+ </div>
+</div>
+</body>
+</html>

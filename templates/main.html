@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid">
+	<div class = "row">
+		<div class = "col-lg-4">{%block friends_view %}{% endblock %}</div>
+		<div class = "col-lg-4">
+			<div class = "row">
+			 	<div class="col-lg-12 col-md-6 col-sm-10">
+					 <h1>Your Info {{session.username}}</h1>
+					 {% block content %}{% endblock %}
+				 </div>
+			</div>
+			<div class = "row">
+			<div class="col-lg-6 col-md-3 col-sm-5">
+				{% block search_user %}{% endblock %}
+			</div>
+			<div class="col-lg-6 col-md-3 col-sm-5">
+				{% block search_friend %}{% endblock %}
+			</div>
+		</div>
+			<div class = "row">
+			<div class="col-lg-6 col-md-3 col-sm-5">
+				{% block block_friend %}{% endblock %}
+			</div>
+			<div class="col-lg-6 col-md-3 col-sm-5">
+				{% block del_friend %}{% endblock %}
+			</div>
+		</div>
+			<div class = "row">
+			<div class="col-lg-1 col-md-3 col-sm-1"></div>
+			<div class="col-lg-4 col-md-3 col-sm-5">
+				{% block friends_view_button %}{% endblock %}
+			</div>
+			<div class="col-lg-4 col-md-3 col-sm-5">
+				{% block upload_picture %}{% endblock %}
+			</div>
+			<div class="col-lg-1 col-md-3 col-sm-1"></div>
+		</div>
+			<div class = "row">
+			<div class="col-lg-1 col-md-3 col-sm-1"></div>
+			<div class="col-lg-4 col-md-3 col-sm-5">
+				{% block  mail%}{% endblock %}
+			</div>
+			<div class="col-lg-4 col-md-3 col-sm-5"></div>
+			<div class="col-lg-1 col-md-3 col-sm-1"></div>
+		</div>
+		</div>
+		<div class = "col-lg-4">{%block friends_request %}{% endblock %}</div>
+	</div>
+</div>
+</body>
+</html>

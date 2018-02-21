@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+
+{% block search_user %}
+    <form action = "/nickname" method="POST">
+        <input name = "nickname" placeholder = "nickname">
+        <button type="submit" class="btn btn-info">Search</button>
+    </form>
+{% endblock %}
+
+{% block add_friend %}
+    <form action = "/add_friend" method="POST">
+        <input name = "nickname" placeholder = "Nickname of Future Friend">
+        <button type="submit" class="btn btn-info">Add</button>
+    </form>
+{% endblock %}

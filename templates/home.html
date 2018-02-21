@@ -1,0 +1,152 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+{%if context:%}
+<style>
+body{
+	text-transform: capitalize;
+	text-align: center;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+		font-size:20px;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+<table>
+	<tr><th>Last Name</th><td>{{context.user.object.last_name}}</td></tr>
+	<tr><th>First Name</th><td>{{context.user.object.first_name}}</td></tr>
+	<tr><th>NickName</th><td>{{context.user.object.nickname}}</td></tr>
+	<tr><th>Email</th><td>{{context.user.object.email}}</td></tr>
+	<tr><th>Password</th><td>{{context.user.object.password}}</td></tr>
+	<tr><th>Create Time</th><td>{{context.user.object.create_time}}</td></tr>
+	<tr><th>Description</th><td>{{context.user.object.descr}}</td></tr>
+</table>
+
+{%else%}
+	<p>HELL0 Unknown ((((</p>
+{%endif%}
+
+{%if context.user.object.id != context.loginUser.object.id%}
+	<form method="POST" action="/add_friend">
+		<input type="name" class="form-control" name="friend_nickname" value="{{context.user.object.nickname}}" style="display:none">
+	<br><button type="submit" class="btn btn-danger" value = "{{context.user.object.nickname}}" >add friend</button>
+	</form>
+{%endif%}
+{% endblock %}
+
+{% block mail %}
+
+<form action="/email" method="GET">
+	<input name = "nickname" placeholder = "email">
+	<input name = "descr" placeholder = "Message">
+	<button type="submit" value = "submit" class="btn btn-info">Send</button>
+	</form>
+
+{% endblock %}
+
+{% block search_user %}
+{%if context.user.object.id == context.loginUser.object.id%}
+	<h1>Search user by nickname.</h1>
+    <form action = "/nickname" method="POST">
+        <input name = "nickname" placeholder = "nickname">
+        <button type="submit" value = "submit" class="btn btn-info">Search</button>
+    </form>
+{%endif%}
+{% endblock %}
+
+{% block search_friend%}
+{%if context.user.object.id == context.loginUser.object.id%}
+<h1>Search your Friend.</h1>
+<form action = "/find_friend">
+	<input name = "friend_nickname" placeholder = "Nickname of Friend">
+	<button type="submit" value = "submit" class="btn btn-info">Search</button>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block del_friend%}
+{%if context.user.object.id != context.loginUser.object.id%}
+	<form method="POST" action="/delete_friend">
+		<input type="name" class="form-control" name="friend_id" value="{{context.user.object.id}}" style="display:none">
+	<br><button type="submit" class="btn btn-danger" value = "{{context.user.object.id}}" >del friend</button>
+	</form>
+{%endif%}
+{% endblock %}
+
+{% block friends_view_button%}
+{%if context.user.object.id == context.loginUser.object.id%}
+	<form action="/friends_view">
+	<br><button type="submit" class="btn btn-danger">view friend</button>
+	</form>
+{%endif%}
+{% endblock %}
+
+{% block friends_view%}
+{%if context.user.object.id == context.loginUser.object.id%}
+	{%if context.friends_list%}
+		<Table>
+		<tr><th>Your request for friends</th></tr>
+		{% for i in context.friends_list %}
+			<tr>
+				<td>
+						<form method="GET" action="/find_friend">
+							<input type="name" class="form-control" name="friend_nickname" value="{{i}}" style="display:none">
+							<input type="submit" class="form-control" name="friend_nickname" value="{{i}}">
+						</form>
+				</td>
+			</tr>
+		{% endfor %}
+		</Table>
+	{%endif%}
+{%endif%}
+{% endblock %}
+
+{% block block_friend%}
+{%if context.user.object.id != context.loginUser.object.id%}
+	<form method="POST" action="/block_friend">
+		<input type="name" class="form-control" name="friend_id" value="{{context.user.object.id}}" style="display:none">
+	<br><button type="submit" class="btn btn-danger" value = "{{context.user.object.id}}" >block friend</button>
+	</form>
+{%endif%}
+{% endblock %}
+
+{% block friends_request%}
+{%if context.user.object.id == context.loginUser.object.id%}
+	{%if context.friends_request_list%}
+		<Table>
+		<tr><th>Your request for friends</th></tr>
+		{% for i in context.friends_request_list %}
+			<tr>
+				<td>
+						<form method="GET" action="/find_friend">
+							<input type="name" class="form-control" name="friend_nickname" value="{{i}}" style="display:none">
+							<input type="submit" class="form-control" name="friend_nickname" value="{{i}}">
+						</form>
+				</td>
+			</tr>
+		{% endfor %}
+		</Table>
+	{%endif%}
+{%endif%}
+{% endblock %}
+
+{% block upload_picture%}
+{%if context.user.object.id == context.loginUser.object.id%}
+	<form method="GET" action="/upload_files">
+		<input type="submit" class="form-control"  value="upload">
+{%endif%}
+{% endblock %}

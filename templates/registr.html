@@ -1,0 +1,58 @@
+{% extends 'registration.html' %}
+
+{% block registr_user %}
+
+{%if context.Error:%}
+     {%for error in context.Error %}
+    <h2>{{error}}</h2>
+     {%endfor%}
+{%endif%}
+
+<div class="form-group">
+	<form action="/registration" method="POST">
+	    Last Name:<br>
+	  <input type="text" name="last_name" value="">
+	    <br>
+	    First Name:<br>
+	  <input type="text" name="first_name" value="">
+	    <br>
+	    Nickname:<br>
+	  <input type="text" name="nickname" value="">
+			<br>
+		Description:<br>
+		  <textarea class="form-control" rows="5" name="descr"></textarea>
+	    <br>
+	  Email:<br>
+	  <input type="text" name="email" value="">
+	  <br>
+	  Passw1:<br>
+	  <input type="text" name="passw1" value="">
+	    <br>
+	  Passw2:<br>
+	  <input type="text" name="passw2" value="">
+	  <br><br>
+	  <input type="submit" value="registration">
+	</form>
+</div>
+
+{% endblock %}
+
+{% block registr_group %}
+{% if context.user %}
+<div class="form-group">
+	<form action="/registr_group" method="POST">
+	    Name of Group:<br>
+	  <input type="text" name="nickname" value="">
+			<br>
+		Description:<br>
+		  <textarea class="form-control" rows="5" name="descr"></textarea>
+	    <br>
+	   Email of Creator:<br>
+	  <input type="text" name="email" value="">
+	  <br>
+	  <input type="submit" value="registration_group">
+	</form>
+</div>
+{% endif %}
+{% endblock %}
+

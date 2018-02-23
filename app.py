@@ -43,17 +43,21 @@ mail = Mail(app)
 
 @app.route("/email")
 def email():
-    user = UserManager()
-    values = user.getModelFromForm(request.form)
-    message = values.object.descr
-    print(message)
-    recipient = values.object.nickname
-    print(recipient)
-    msg = Message(message,
-        sender="nikita.ogranchuk@gmail.com",
-        recipients=[recipient])
-    mail.send(msg)
-    return('ok')
+    print('Hello Sender!')
+    if request.method == 'POST':
+        user = UserManager()
+        values = user.getModelFromForm(request.form)
+        message = values.object.descr
+        print(message)
+       # recipient = values.object.nickname
+       # print(recipient)
+        msg = Message(message,
+            sender="nikita.ogranchuk@gmail.com",
+            recipients="hardanchukvasia@gmail.com")
+        mail.send(msg)
+        return('ok')
+    else:
+        return render_template('mail.html')
 
 def login_required(f):
     @wraps(f)
@@ -107,7 +111,7 @@ def add_friend():
         friend = UserRelationManager()
         if user_id and friend_id:
             friend.addFriend(user_id , friend_id)
-            return('ok')
+            return redirect(url_for('home'))
         return('!ok')
     else:
         render_template('home.html')
@@ -170,7 +174,7 @@ def block_friend():
         friend = UserRelationManager()
         if user_id and friend_id:
             friend.blockFriend(user_id , friend_id)
-            return('ok')
+            return redirect(url_for('home'))
         return('!ok')
     else:
         render_template('home.html')
@@ -193,20 +197,13 @@ def friends_view():
     friends = []
     friends_request = []
     friend_nickname = UserManager()
-    print('ok1')
-    print('ok2')
     for i in friend.object:
         friend_id = i.user2
         friend_nickname.get_user(friend_id)
         if i.block == 2 or i.block == 1:
-            print('/ok')
-            print(friend_nickname.object)
             friends_request.append(friend_nickname.object.nickname)
         else:
-            print('ok')
-            print(friend_nickname.object)
             friends.append(friend_nickname.object.nickname)
-        print(friends)
     context['friends_list'] = friends
     context['friends_request_list'] = friends_request
     return render_template('home.html', context = context)
@@ -304,24 +301,24 @@ def registr_group():
 
 @app.route("/upload_files")
 def index():
-    return render_template("upload.html")
+    return render_template('upload.html')
 
-@app.route("/upload", methods=['POST'])
-def upload():
-    target = os.path.join(APP_ROOT, 'images/')
-    print(target)
-    if not os.path.isdir(target):
-        os.mkdir(target)
+#@app.route("/upload", methods=['POST'])
+#def upload():
+ #   target = os.path.join(APP_ROOT, 'images/')
+ #   print(target)
+ #   if not os.path.isdir(target):
+ #       os.mkdir(target)
 
-    for file in request.files.getlist("file"):
-        print(file)
-        filename = file.filename
-        destination = "/".join([target, filename])
-        print(destination)
-        print(filename)
-        file.save(destination)
+#    for file in request.files.getlist("file"):
+ #       print(file)
+  #      filename = file.filename
+   #     destination = "/".join([target, filename])
+    #    print(destination)
+     #   print(filename)
+      #  file.save(destination)
 
-    return render_template("complete.html" , image_name = filename)
+   # return render_template("complete.html" , image_name = filename)
 
 @app.route('/upload/<filename>')
 def send_image(filename):

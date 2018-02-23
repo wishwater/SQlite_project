@@ -49,11 +49,11 @@ tr:nth-child(even) {
 {% endblock %}
 
 {% block mail %}
-
-<form action="/email" method="GET">
-	<input name = "nickname" placeholder = "email">
-	<input name = "descr" placeholder = "Message">
-	<button type="submit" value = "submit" class="btn btn-info">Send</button>
+	<h1>Send message by email</h1>
+	<form action="/email" method = "POST">
+		<input name = "nickname" placeholder = "email">
+		<input name = "descr" placeholder = "Message">
+		<button type="submit" value = "submit" class="btn btn-info">Send</button>
 	</form>
 
 {% endblock %}
@@ -148,5 +148,6 @@ tr:nth-child(even) {
 {%if context.user.object.id == context.loginUser.object.id%}
 	<form method="GET" action="/upload_files">
 		<input type="submit" class="form-control"  value="upload">
+	</form>
 {%endif%}
 {% endblock %}

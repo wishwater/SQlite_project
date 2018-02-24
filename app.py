@@ -55,11 +55,11 @@ def login_required(f):
 def email():
     print('Hello Sender!')
     #if request.method == 'POST':
-        #user = UserManager()
-        #values = user.getModelFromForm(request.form)
-      #  message = values.object.descr
-       # recipient = values.object.nickname
-       # print(recipient)
+    #user = UserManager()
+    #values = user.getModelFromForm(request.form)
+    #  message = values.object.descr
+    # recipient = values.object.nickname
+    # print(recipient)
     msg = Message("hey man1",
         sender="nikita.ogranchuk@gmail.com",
         recipients=["hardanchukvasia@gmail.com"])
@@ -199,6 +199,8 @@ def friends_view():
     friends_request = []
     friend_nickname = UserManager()
     for i in friend.object:
+        print('hey friend')
+        print()
         friend_id = i.user2
         friend_nickname.get_user(friend_id)
         if i.block == 2 or i.block == 1:

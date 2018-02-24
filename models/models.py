@@ -45,6 +45,7 @@ class UserRelation(Model):
     user1 = IntType(required=True)
     user2 = IntType(required=True)
     block = IntType(required=True, default=0)
+    sender_id = IntType(required=True)
     create_time = DateTimeType(required=True, default=datetime.now())
 
 #class for group and her abilities

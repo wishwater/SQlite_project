@@ -41,24 +41,6 @@ mail = Mail(app)
 #app.config['MAIL_PORT'] = 587
 #app.config['MAIL_USE_TLS'] = True
 
-@app.route("/email")
-def email():
-    print('Hello Sender!')
-    if request.method == 'POST':
-        user = UserManager()
-        values = user.getModelFromForm(request.form)
-        message = values.object.descr
-        print(message)
-       # recipient = values.object.nickname
-       # print(recipient)
-        msg = Message(message,
-            sender="nikita.ogranchuk@gmail.com",
-            recipients="hardanchukvasia@gmail.com")
-        mail.send(msg)
-        return('ok')
-    else:
-        return render_template('mail.html')
-
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -67,6 +49,25 @@ def login_required(f):
                 return f(*args, **kwargs)
         return redirect(url_for('login'))
     return wrap
+
+@app.route("/email")
+@login_required
+def email():
+    print('Hello Sender!')
+    #if request.method == 'POST':
+        #user = UserManager()
+        #values = user.getModelFromForm(request.form)
+      #  message = values.object.descr
+       # recipient = values.object.nickname
+       # print(recipient)
+    msg = Message("hey man1",
+        sender="nikita.ogranchuk@gmail.com",
+        recipients=["hardanchukvasia@gmail.com"])
+    mail.send(msg)
+    return('ok')
+    #else:
+     #   return('/ok')
+
 
 
 # описуємо логін роут

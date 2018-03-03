@@ -107,32 +107,39 @@ def add_friend():
             user_id = user.object.id
         friend_id = request.form['friend_id']
         func_type = request.form['func_type']
+        func_type = int(func_type)
+        print(type(func_type))
+        print('kjgjgjgjf')
         friend = UserRelationManager()
         isfriend = friend.isFriend(user_id,friend_id)
         print(isfriend)
         print('Vasya privet')
         if isfriend == True:
             print('func_type')
+            print(func_type)
             print("it's working")
             if func_type == 1: # Block
+                print('You are blocking a friend.')
                 if user_id and friend_id:
                     friend.blockFriend(user_id , friend_id)
                     return redirect(url_for('home'))
-                return('!ok')
             elif func_type == 2: #Delete
+                print('You are deliting a friend.')
+                print('hallo mein freinde.')
                 if user_id and friend_id:
                     friend.delFriend(user_id , friend_id)
-                    return('ok')
-                return('!ok')
+                    return redirect(url_for('home'))
             elif func_type == 3: # AddFriend
                 sender = user.ifsender()
+                print('Hallo.')
                 if sender == True:
-                    return
+                    print('you are sender')
+                    return("You are Sender You can't accept it.")
                 else:
                     if user_id and friend_id:
+                        print('You are adding a friend.')
                         friend.addFriend(user_id , friend_id)
                         return redirect(url_for('home'))
-                        return('!ok')
         else:
             print('hey chuvak')
             if user_id and friend_id:
@@ -144,56 +151,25 @@ def add_friend():
     else:
         return  redirect(url_for('home'))
 
-
-#@app.route('/add_friend', methods=["GET","POST"])
-#@login_required
-#def add_friend():
-#    if request.method == 'POST':
-#        user_nickname = session['username']
-#        user = UserManager()
-#        if user.SelectUser(user_nickname):
-#            user_id = user.object.id
-#        friend_nickname = request.form['friend_nickname']
-#        friend = UserManager()
-#        if friend.SelectUser(friend_nickname):
-#            friend_id = friend.object.id
-#        friend = UserRelationManager()
-#        IsItYourFriend = friend.isFriend(user_id , friend_id)
-#        isSender = friend.isFriend(user_id)
-#        if isSender:
-#            return("You give this Request.You can't accept it")
-#        else:
-#            if user_id and friend_id:
-#                friend.addFriend(user_id , friend_id)
-#                return redirect(url_for('home'))
-#            return('!ok')
-#
-#    else:
-#       render_template('home.html')
-
 @app.route('/find_friend', methods = ["GET","POST"])
 @login_required
 def find_friend():
     if request.method == 'GET':
         user_nickname = session['username']
-        print(user_nickname)
-        print('username')
         user = UserManager()
         if user.SelectUser(user_nickname):
             user_id = user.object.id
-            print('userid')
-            print(user_id)
         friend_nickname = request.args['friend_nickname']
         friend = UserManager()
         if friend.SelectUser(friend_nickname):
             friend_id = friend.object.id
-            print('friend_id')
-            print(friend_id)
         friend = UserRelationManager()
         if user_id and friend_id:
             IsItYourFriend = friend.isFriend(user_id , friend_id)
             if IsItYourFriend == True:
                 return redirect(url_for('nickname', nickname = friend_nickname))
+            elif friend_nickname == None:
+                return redirect(url_for('home'))
             else:
                 #context = {'Error': []}
                # context['Error:'].append("you don't have friend with that nickname")
@@ -253,12 +229,25 @@ def friends_view():
     friends = []
     friends_request = []
     friend_nickname = UserManager()
-    for i in friend.object:
-        print('hey friend')
-        print()
-        friend_id = i.user2
+    print(type(friend.object))
+    print(friend.object)
+    if isinstance(friend.object,list):
+        for i in friend.object:
+            print('hey friend')
+            print(i)
+            friend_id = i.user2
+            friend_nickname.get_user(friend_id)
+            if i.block == 2 or i.block == 1:
+                friends_request.append(friend_nickname.object.nickname)
+            else:
+                friends.append(friend_nickname.object.nickname)
+    else:
+        print(friend.object)
+        friend_id = friend.object.user2
+        print(type(friend_id))
+        print(friend_id)
         friend_nickname.get_user(friend_id)
-        if i.block == 2 or i.block == 1:
+        if friend.object.block == 2 or friend.object.block == 1:
             friends_request.append(friend_nickname.object.nickname)
         else:
             friends.append(friend_nickname.object.nickname)
@@ -310,10 +299,41 @@ def edit():
             context['user'] = user
     if request.method == 'POST':
         user = user.getModelFromForm(request.form)
+        print('Hallo!')
+        print(user)
         if user.save():
+            print('Hallo!2')
             context['user'] = user
             return redirect(url_for('home'))
     return render_template('edit.html', context=context)
+
+@app.route('/registration',methods = ["POST"])
+def registation():
+    context = {'Error': []}
+    if session['username']:
+        return redirect(url_for('registr_group'))
+    else:
+        if session.get('username') and request.method == 'GET':
+            nickname = session.get('username')
+            user = UserManager()
+            user.SelectUser(nickname)
+            context['user'] = user
+            return render_template('registration.html', context=context)
+        if request.method == 'POST':
+            user = UserManager().getModelFromForm(request.form)
+            if user.check_user():
+                context['Error'].append('wrong nickname or email')
+            if not user.object.password:
+                context['Error'].append('incorrect password')
+            if context['Error']:
+                return render_template('registration.html', context=context)
+            if user.save():
+                UserManager.load_models[user.object.nickname] = user
+                addToSession(user)
+                return redirect(url_for('home'))
+
+            context['Error'].append('incorrect data')
+        return render_template('registr.html', context=context)
 
 @app.route('/registration', methods=["GET", "POST"])
 def registration():

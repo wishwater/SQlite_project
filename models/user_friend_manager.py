@@ -11,9 +11,13 @@ class UserRelationManager(SNBaseManager):
     def __init__(self):
         self.object = UserRelation()
 
-    def addFriend(self,user,friend,sender):
+    def addFriend(self,user1,friend1,sender):
+        user = int(user1)
+        friend = int(friend1)
+
         if not (isinstance(user, int) and isinstance(friend, int)):
             return
+
         if self.getFriend(user, friend):
             return
 
@@ -30,8 +34,6 @@ class UserRelationManager(SNBaseManager):
         self.object.user1 = user
         self.object.user2 = friend
         self.object.block = 2
-
-        print('userHFJFFK')
 
         return self.save()
 

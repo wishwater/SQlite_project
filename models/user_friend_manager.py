@@ -11,7 +11,7 @@ class UserRelationManager(SNBaseManager):
     def __init__(self):
         self.object = UserRelation()
 
-    def addFriend(self,user,friend):
+    def addFriend(self,user,friend,sender):
         if not (isinstance(user, int) and isinstance(friend, int)):
             return
         if self.getFriend(user, friend):
@@ -23,17 +23,28 @@ class UserRelationManager(SNBaseManager):
             self.object.block = 0
             return self.save()
 
+        if sender == 0:
+            self.object.sender_id = user
+
 
         self.object.user1 = user
         self.object.user2 = friend
         self.object.block = 2
 
-        return self.saveFriends()
+        print('userHFJFFK')
+
+        return self.save()
+
+    def IsSender(self,user1):
+        user_id = int(user1)
+        if user_id == self.object.sender_id:
+            return True
+        return False
 
     def saveFriends(self):
+        print('heylofASjwifahifoa')
         sql = self.insert_sql.format(self.object._name, self._sqlValues(self.insert_sql_values))
         return self.executeSQL(sql)
-        return('ok')
 
     def delFriend(self, user1, friend1):
         friend = int(friend1)
@@ -61,12 +72,21 @@ class UserRelationManager(SNBaseManager):
         self.select().And([('user1', '=', user), ('user2', '=', friend)]) \
             .Or([('user1', '=', friend), ('user2', '=', user)]).run()
 
-    def isFriend(self, user, friend):
+    def isFriend(self, user1, friend1):
+        print('hey,you are in friend_manager1')
+        friend = int(friend1)
+        user = int(user1)
+        print(user)
+        print(type(user))
+        print(friend)
+        print(type(friend))
         if not (isinstance(user, int) and isinstance(friend, int)):
             return
 
         self.select().And([('user1', '=', user), ('user2', '=', friend)]) \
             .Or([('user1', '=', friend), ('user2', '=', user)]).run()
+
+        print('hey,you are in friend_manager2')
 
         if self.object.id:
             return True

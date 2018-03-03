@@ -34,6 +34,15 @@ class UserManager(SNBaseManager):
         relationManager.addFriend(self.object.id, id)
 
 
+    def ifsender(self):
+        relationManager = UserRelationManager()
+        relationManager.IsSender(self.object.id)
+
+    def isfriend(self,user1,friend1):
+        relationManager = UserRelationManager()
+        relationManager.isFriend(user1, friend1)
+
+
     def get_friends(self):
         relationManager = UserRelationManager()
         relationManager.getFriends(self.object.id)

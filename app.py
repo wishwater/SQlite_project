@@ -54,17 +54,17 @@ def login_required(f):
 @login_required
 def email():
     print('Hello Sender!')
-    #if request.method == 'POST':
-    #user = UserManager()
-    #values = user.getModelFromForm(request.form)
-    #  message = values.object.descr
-    # recipient = values.object.nickname
-    # print(recipient)
-    msg = Message("hey man1",
-        sender="nikita.ogranchuk@gmail.com",
-        recipients=["hardanchukvasia@gmail.com"])
-    mail.send(msg)
-    return('ok')
+    if request.method == 'POST':
+        user = UserManager()
+        values = user.getModelFromForm(request.form)
+        message = values.object.descr
+        #recipient = values.object.nickname
+        #print(recipient)
+        msg = Message(message,
+            sender="nikita.ogranchuk@gmail.com",
+            recipients=["hardanchukvasia@gmail.com"])
+        mail.send(msg)
+        return('ok')
     #else:
      #   return('/ok')
 
@@ -101,21 +101,75 @@ def logout():
 @login_required
 def add_friend():
     if request.method == 'POST':
-        user_nickname = session['username']
         user = UserManager()
+        user_nickname = session['username']
         if user.SelectUser(user_nickname):
             user_id = user.object.id
-        friend_nickname = request.form['friend_nickname']
-        friend = UserManager()
-        if friend.SelectUser(friend_nickname):
-            friend_id = friend.object.id
+        friend_id = request.form['friend_id']
+        func_type = request.form['func_type']
         friend = UserRelationManager()
-        if user_id and friend_id:
-            friend.addFriend(user_id , friend_id)
-            return redirect(url_for('home'))
-        return('!ok')
+        isfriend = friend.isFriend(user_id,friend_id)
+        print(isfriend)
+        print('Vasya privet')
+        if isfriend == True:
+            print('func_type')
+            print("it's working")
+            if func_type == 1: # Block
+                if user_id and friend_id:
+                    friend.blockFriend(user_id , friend_id)
+                    return redirect(url_for('home'))
+                return('!ok')
+            elif func_type == 2: #Delete
+                if user_id and friend_id:
+                    friend.delFriend(user_id , friend_id)
+                    return('ok')
+                return('!ok')
+            elif func_type == 3: # AddFriend
+                sender = user.ifsender()
+                if sender == True:
+                    return
+                else:
+                    if user_id and friend_id:
+                        friend.addFriend(user_id , friend_id)
+                        return redirect(url_for('home'))
+                        return('!ok')
+        else:
+            print('hey chuvak')
+            if user_id and friend_id:
+                sender = 0
+                print('hey good man')
+                friend.addFriend(user_id , friend_id,sender)
+                print(friend.addFriend(user_id , friend_id,sender))
+                return redirect(url_for('home'))
     else:
-        render_template('home.html')
+        return  redirect(url_for('home'))
+
+
+#@app.route('/add_friend', methods=["GET","POST"])
+#@login_required
+#def add_friend():
+#    if request.method == 'POST':
+#        user_nickname = session['username']
+#        user = UserManager()
+#        if user.SelectUser(user_nickname):
+#            user_id = user.object.id
+#        friend_nickname = request.form['friend_nickname']
+#        friend = UserManager()
+#        if friend.SelectUser(friend_nickname):
+#            friend_id = friend.object.id
+#        friend = UserRelationManager()
+#        IsItYourFriend = friend.isFriend(user_id , friend_id)
+#        isSender = friend.isFriend(user_id)
+#        if isSender:
+#            return("You give this Request.You can't accept it")
+#        else:
+#            if user_id and friend_id:
+#                friend.addFriend(user_id , friend_id)
+#                return redirect(url_for('home'))
+#            return('!ok')
+#
+#    else:
+#       render_template('home.html')
 
 @app.route('/find_friend', methods = ["GET","POST"])
 @login_required
@@ -146,39 +200,39 @@ def find_friend():
                 render_template('find_friend error.html')
                 return("you do not have friends with this nickname")
 
-@app.route('/delete_friend', methods=["GET","POST"])
-@login_required
-def delete_friend():
-    if request.method == 'POST':
-        user_nickname = session['username']
-        user = UserManager()
-        if user.SelectUser(user_nickname):
-            user_id = user.object.id
-        friend_id = request.form['friend_id']
-        friend = UserRelationManager()
-        if user_id and friend_id:
-            friend.delFriend(user_id , friend_id)
-            return('ok')
-        return('!ok')
-    else:
-        render_template('home.html')
+#@app.route('/delete_friend', methods=["GET","POST"])
+#@login_required
+#def delete_friend():
+#    if request.method == 'POST':
+#        user_nickname = session['username']
+#        user = UserManager()
+#        if user.SelectUser(user_nickname):
+#            user_id = user.object.id
+#        friend_id = request.form['friend_id']
+#        friend = UserRelationManager()
+#        if user_id and friend_id:
+#            friend.delFriend(user_id , friend_id)
+#            return('ok')
+#        return('!ok')
+#    else:
+#        render_template('home.html')
 
-@app.route('/block_friend', methods=["GET","POST"])
-@login_required
-def block_friend():
-    if request.method == 'POST':
-        user_nickname = session['username']
-        user = UserManager()
-        if user.SelectUser(user_nickname):
-            user_id = user.object.id
-        friend_id = request.form['friend_id']
-        friend = UserRelationManager()
-        if user_id and friend_id:
-            friend.blockFriend(user_id , friend_id)
-            return redirect(url_for('home'))
-        return('!ok')
-    else:
-        render_template('home.html')
+#@app.route('/block_friend', methods=["GET","POST"])
+#@login_required
+#def block_friend():
+#    if request.method == 'POST':
+#        user_nickname = session['username']
+#        user = UserManager()
+#        if user.SelectUser(user_nickname):
+#            user_id = user.object.id
+#        friend_id = request.form['friend_id']
+#        friend = UserRelationManager()
+#        if user_id and friend_id:
+#            friend.blockFriend(user_id , friend_id)
+#            return redirect(url_for('home'))
+#        return('!ok')
+#    else:
+#        render_template('home.html')
 
 @app.route('/friends_view',methods = ["GET","POST"])
 @login_required
@@ -194,6 +248,7 @@ def friends_view():
     if user.SelectUser(user_nickname):
         user_id = user.object.id
     friend = UserRelationManager()
+    print('hey man')
     friend.getFriends(user_id)
     friends = []
     friends_request = []

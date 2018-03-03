@@ -241,8 +241,13 @@ def friends_view():
                 friends_request.append(friend_nickname.object.nickname)
             else:
                 friends.append(friend_nickname.object.nickname)
+    elif friend.object == None:
+        return('YOU ARE ALONE.')
     else:
+        print('friends')
         print(friend.object)
+        if isinstance(friend.object,None):
+            return ('YOU ARE ALONE.')
         friend_id = friend.object.user2
         print(type(friend_id))
         print(friend_id)

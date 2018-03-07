@@ -1,6 +1,6 @@
 {% extends 'registration.html' %}
 
-{% block registr_user %}
+{% block registration_user %}
 
 {%if context.Error:%}
      {%for error in context.Error %}
@@ -37,8 +37,13 @@
 
 {% endblock %}
 
-{% block registr_group %}
-{% if context.user %}
+{% block registration_group %}
+{%if context.Error:%}
+     {%for error in context.Error %}
+    <h2>{{error}}</h2>
+     {%endfor%}
+{%endif%}
+
 <div class="form-group">
 	<form action="/registr_group" method="POST">
 	    Name of Group:<br>
@@ -53,6 +58,5 @@
 	  <input type="submit" value="registration_group">
 	</form>
 </div>
-{% endif %}
 {% endblock %}
 

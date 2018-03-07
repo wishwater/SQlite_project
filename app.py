@@ -176,39 +176,6 @@ def find_friend():
                 render_template('find_friend error.html')
                 return("you do not have friends with this nickname")
 
-#@app.route('/delete_friend', methods=["GET","POST"])
-#@login_required
-#def delete_friend():
-#    if request.method == 'POST':
-#        user_nickname = session['username']
-#        user = UserManager()
-#        if user.SelectUser(user_nickname):
-#            user_id = user.object.id
-#        friend_id = request.form['friend_id']
-#        friend = UserRelationManager()
-#        if user_id and friend_id:
-#            friend.delFriend(user_id , friend_id)
-#            return('ok')
-#        return('!ok')
-#    else:
-#        render_template('home.html')
-
-#@app.route('/block_friend', methods=["GET","POST"])
-#@login_required
-#def block_friend():
-#    if request.method == 'POST':
-#        user_nickname = session['username']
-#        user = UserManager()
-#        if user.SelectUser(user_nickname):
-#            user_id = user.object.id
-#        friend_id = request.form['friend_id']
-#        friend = UserRelationManager()
-#        if user_id and friend_id:
-#            friend.blockFriend(user_id , friend_id)
-#            return redirect(url_for('home'))
-#        return('!ok')
-#    else:
-#        render_template('home.html')
 
 @app.route('/friends_view',methods = ["GET","POST"])
 @login_required
@@ -301,6 +268,8 @@ def edit():
     context = {}
     user = UserManager()
     if user.SelectUser(nickname):
+            print(user)
+            print(user.object.descr)
             context['user'] = user
     if request.method == 'POST':
         user = user.getModelFromForm(request.form)
@@ -312,44 +281,23 @@ def edit():
             return redirect(url_for('home'))
     return render_template('edit.html', context=context)
 
-@app.route('/registration',methods = ["POST"])
-def registation():
-    context = {'Error': []}
-    if session['username']:
-        return redirect(url_for('registr_group'))
-    else:
-        if session.get('username') and request.method == 'GET':
-            nickname = session.get('username')
-            user = UserManager()
-            user.SelectUser(nickname)
-            context['user'] = user
-            return render_template('registration.html', context=context)
-        if request.method == 'POST':
-            user = UserManager().getModelFromForm(request.form)
-            if user.check_user():
-                context['Error'].append('wrong nickname or email')
-            if not user.object.password:
-                context['Error'].append('incorrect password')
-            if context['Error']:
-                return render_template('registration.html', context=context)
-            if user.save():
-                UserManager.load_models[user.object.nickname] = user
-                addToSession(user)
-                return redirect(url_for('home'))
-
-            context['Error'].append('incorrect data')
-        return render_template('registr.html', context=context)
-
-@app.route('/registration', methods=["GET", "POST"])
+@app.route('/registration',methods = ["GET","POST"])
 def registration():
+    print('hey man1')
     context = {'Error': []}
     if session.get('username') and request.method == 'GET':
+        print('hey man2')
         nickname = session.get('username')
         user = UserManager()
-        user.SelectUser(nickname)
-        context['user'] = user
-        return render_template('registr.html', context=context)
-    if request.method == 'POST':
+        if user.SelectUser(nickname):
+            print(user.object.id)
+            print(user)
+            context['user'] = user
+            context['group'] = True
+        else:
+            context['group'] = False
+        print(context['group'])
+    elif request.method == 'POST':
         user = UserManager().getModelFromForm(request.form)
         if user.check_user():
             context['Error'].append('wrong nickname or email')
@@ -362,8 +310,38 @@ def registration():
             addToSession(user)
             return redirect(url_for('home'))
 
-        context['Error'].append('incorrect data')
-    return render_template('registr.html', context=context)
+            context['Error'].append('incorrect data')
+        return render_template('registr.html', context=context)
+    else:
+        context['group'] = False
+        print('hey man 2.1')
+        print(context['group'])
+    return render_template('registration.html', context=context)
+
+#@app.route('/registration', methods=["GET", "POST"])
+#def registration():
+#    context = {'Error': []}
+#    if session.get('username') and request.method == 'GET':
+#        nickname = session.get('username')
+#        user = UserManager()
+#        user.SelectUser(nickname)
+#        context['user'] = user
+#        return render_template('registr.html', context=context)
+#    if request.method == 'POST':
+#        user = UserManager().getModelFromForm(request.form)
+#        if user.check_user():
+#            context['Error'].append('wrong nickname or email')
+#        if not user.object.password:
+#            context['Error'].append('incorrect password')
+#        if context['Error']:
+#            return render_template('registration.html', context=context)
+#        if user.save():
+#            UserManager.load_models[user.object.nickname] = user
+#            addToSession(user)
+#            return redirect(url_for('home'))
+
+#        context['Error'].append('incorrect data')
+#    return render_template('registr.html', context=context)
 
 @app.route('/registr_group', methods=["GET", "POST"])
 def registr_group():

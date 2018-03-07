@@ -213,7 +213,7 @@ def friends_view():
     else:
         print('friends')
         print(friend.object)
-        if isinstance(friend.object,None):
+        if not friend.object:
             return ('YOU ARE ALONE.')
         friend_id = friend.object.user2
         print(type(friend_id))
@@ -316,7 +316,7 @@ def registration():
         context['group'] = False
         print('hey man 2.1')
         print(context['group'])
-    return render_template('registration.html', context=context)
+    return render_template('registr.html', context=context)
 
 #@app.route('/registration', methods=["GET", "POST"])
 #def registration():

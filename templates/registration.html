@@ -8,7 +8,11 @@
 	<div class = "row">
         <div class = "col-lg-4"></div>
 		<div class = "col-lg-4">
+		{% if context['group']%}
 			{% block registration_group %}{% endblock %}
+		{% else %}
+			{% block registration_user %}{% endblock %}
+		{% endif %}
 		</div>
         <div class = "col-lg-4"></div>
     </div>

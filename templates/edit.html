@@ -66,8 +66,10 @@
 					  Passw2:<br>
 					  <input type="text" name="passw2" value="{{context.user.object.password}}" class="form-control">
 					  <br>
+						<input type="text" name="type_name" value="test" class="form-control" style = "display:none">
 						About:
-						<textarea class="form-control" rows="5" name="descr" value="{{context.user.object.descr}}"></textarea>
+						<input type="text" name="descr" value="{{context.user.object.descr}}" class="form-control">
+						<!--<textarea class="form-control" rows="5" name="descr" placeholder ="{{context.user.object.descr}}"></textarea>-->
 					    <button type="submit" class="btn btn-info">Save Changes</button>
 						<button type="submit" class="btn">Cancel</button>
 					</form>

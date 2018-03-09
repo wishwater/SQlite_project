@@ -138,7 +138,8 @@ def add_friend():
                 else:
                     if user_id and friend_id:
                         print('You are adding a friend.')
-                        friend.addFriend(user_id , friend_id)
+                        sender_id = user_id
+                        friend.addFriend(user_id , friend_id, sender_id)
                         return redirect(url_for('home'))
         else:
             print('hey chuvak')
@@ -162,9 +163,13 @@ def find_friend():
         friend_nickname = request.args['friend_nickname']
         friend = UserManager()
         if friend.SelectUser(friend_nickname):
+            print('ok')
             friend_id = friend.object.id
+        else:
+            friend_id = 0
+            print('/ok')
         friend = UserRelationManager()
-        if user_id and friend_id:
+        if user_id and friend_id != 0 :
             IsItYourFriend = friend.isFriend(user_id , friend_id)
             if IsItYourFriend == True:
                 return redirect(url_for('nickname', nickname = friend_nickname))
@@ -175,6 +180,8 @@ def find_friend():
                # context['Error:'].append("you don't have friend with that nickname")
                 render_template('find_friend error.html')
                 return("you do not have friends with this nickname")
+        else:
+            return("you do not have friends with this nickname")
 
 
 @app.route('/friends_view',methods = ["GET","POST"])
@@ -213,7 +220,7 @@ def friends_view():
     else:
         print('friends')
         print(friend.object)
-        if not friend.object:
+        if not friend.object.user2:
             return ('YOU ARE ALONE.')
         friend_id = friend.object.user2
         print(type(friend_id))
@@ -240,9 +247,13 @@ def nickname(nickname):
 
     selectUser = UserManager()
     selectUser.select().And([('nickname','=',nickname)]).run()
-    context['user'] = selectUser
-
-    return render_template('home.html', context=context)
+    print('Select user')
+    print(selectUser.object.id)
+    if not selectUser.object.id:
+        return('Ops!Nobody Have This Nickname.')
+    else:
+        context['user'] = selectUser
+        return render_template('home.html', context=context)
 
 # описуємо домашній роут
 # сіда зможуть попадати тільки GET запроси

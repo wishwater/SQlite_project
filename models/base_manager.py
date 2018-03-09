@@ -43,6 +43,7 @@ class SNBaseManager():
         return result.format(*[template.format(key, self._chooseTemp(primitive[key])) for key in keys])
 
     def save(self):
+        print(self.object.id)
         if self.object.id:
             sql = self.update_sql.format(self.object._name, self._sqlValues(self.update_sql_set), self.object.id)
         else:

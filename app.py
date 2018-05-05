@@ -305,6 +305,10 @@ def registration():
             print(user)
             context['user'] = user
             context['group'] = True
+            if user.save():
+                return redirect(url_for('home'))
+            else:
+                return('shit')
         else:
             context['group'] = False
         print(context['group'])
